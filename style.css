@@ -1,39 +1,41 @@
+/* Base styles */
 body {
-    font-family: 'Segoe UI', sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color: #f2f2f2;
-    text-align: center;
-  }
-  
-  #app {
-    max-width: 400px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  }
-  
-  button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    font-size: 16px;
-    border-radius: 5px;
-    border: none;
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  input {
-    width: 100%;
-    padding: 10px;
-    margin: 15px 0;
-    font-size: 16px;
-  }
-  /*              sākas dificulty screen           */
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f2f2f2;
+  text-align: center;
+}
+
+#app {
+  max-width: 400px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 15px 0;
+  font-size: 16px;
+}
+
+/* Difficulty screen */
 .difficulty-container {
   display: flex;
   flex-direction: column;
@@ -47,7 +49,7 @@ body {
 
 .difficulty-header {
   width: 100%;
-  display: absolute;
+  display: flex;
   justify-content: space-between;
   align-items: center;
 }
@@ -73,8 +75,6 @@ body {
   border-radius: 2px;
 }
 
-}
-
 .difficulty-btn {
   width: 100%;
   max-width: 300px;
@@ -93,31 +93,31 @@ body {
 }
 
 .difficulty-btn.easy {
-  background-color: #81c784; /* Green */
+  background-color: #81c784;
 }
 
 .difficulty-btn.medium {
-  background-color: #c0ca33; /* Olive */
+  background-color: #c0ca33;
 }
 
 .difficulty-btn.hard {
-  background-color: #ffb74d; /* Orange */
+  background-color: #ffb74d;
 }
 
 .difficulty-btn.tricky {
-  background-color: #e57373; /* Red */
+  background-color: #e57373;
 }
-/*               beidzas dificulty screen   */
-/*             sākas popup menu          */
+
+/* Popup menu */
 .popup-menu {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(200, 200, 200, 0.85); /*       bik caurspīdīgs         */
+  background-color: rgba(200, 200, 200, 0.85);
   display: flex;
-  justify-content: center;                /*  šo arī vajag pamainīt lai tiktu menu novietots labākā pozīcijā     */
+  justify-content: center;
   align-items: center;
   z-index: 1000;
 }
@@ -147,7 +147,7 @@ body {
   padding: 12px;
   border: 2px solid #333;
   border-radius: 15px;
-  background-color: red;                /* šo vajag pamainīt bet man tgd slinkums   */
+  background-color: #d9534f;
   font-family: 'Comic Sans MS', cursive, sans-serif;
   font-size: 1rem;
   cursor: pointer;
@@ -184,8 +184,7 @@ body {
   font-size: 0.95rem;
 }
 
-/*                     beidzas menu                */
-
+/* Login screen */
 .login-container {
   background-color: #e0e0e0;
   padding: 30px 20px;
@@ -236,50 +235,7 @@ body {
   cursor: pointer;
 }
 
-/*         karoč te beidzas login screen  un tālāk noformējums priekš pašiem "questions"     */
-.quiz-container {
-  background-color: #e0e0e0;
-  padding: 30px 20px;
-  border-radius: 12px;
-  text-align: center;
-}
-
-.quiz-question {
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  font-size: 1.2rem;
-  margin-bottom: 30px;
-}
-
-.quiz-answers {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-
-}
-
-.quiz-answer-btn {
-/*   background-color: #c1f2f6;   */             /*  krāsu vajag vēlāk salabot  */
-  background-color: red;
-  color: black;									/*  krāsa jautājuma tekstam -  vajag vēlāk salabot  */
-  border: none;
-  padding: 15px;
-  border-radius: 15px;
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: transform 0.2s;
-  word-break: break-word;       /* automātiski sadala vārdus, ja nepieciešams */
-  white-space: normal;          /* ļauj tekstam aplūzt */
-  text-align: center;
-  overflow-wrap: break-word;    /* alternatīvs variants dažiem pārlūkiem */
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.quiz-answer-btn:hover {
-  transform: scale(1.03);
-}
-/*                        te daļa kas vajadzīga "scroll test" tipa uzdevumiem / jautājumiem   */
+/* Quiz question screen */
 .quiz-container {
   background-color: #e0e0e0;
   padding: 30px 20px;
@@ -295,28 +251,23 @@ body {
   margin-bottom: 30px;
 }
 
-/* Jaunā struktūra – ārējais konteiners */
 .quiz-answers-outer {
   position: relative;
   height: 300px;
 }
 
-/* Skrollējamais iekšējais konteiners */
 .quiz-answers-wrapper {
   height: 100%;
   overflow-y: auto;
   padding-right: 10px;
-
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer/Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .quiz-answers-wrapper::-webkit-scrollbar {
-  display: none; /* Chrome, Safari and Opera */
+  display: none;
 }
 
-
-/* Atbildes saraksts */
 .quiz-answers {
   display: flex;
   flex-direction: column;
@@ -324,9 +275,9 @@ body {
   padding-right: 10px;
 }
 
-/* Atbildes pogas */
 .quiz-answer-btn {
   background-color: #c1f2f6;
+  color: #000;
   border: none;
   padding: 15px;
   border-radius: 15px;
@@ -334,19 +285,23 @@ body {
   font-size: 1rem;
   cursor: pointer;
   transition: transform 0.2s;
+  word-break: break-word;
+  white-space: normal;
+  text-align: center;
+  overflow-wrap: break-word;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .quiz-answer-btn:hover {
   transform: scale(1.03);
 }
 
-/* Fading augšā un apakšā – vienmēr virs satura */
-.fade-top,
-.fade-bottom {
+.fade-top, .fade-bottom {
   position: absolute;
   left: 0;
   width: 100%;
-  height: 40px;
+  height: 30px;
   pointer-events: none;
   z-index: 2;
 }
@@ -361,7 +316,7 @@ body {
   background: linear-gradient(to top, #e0e0e0 0%, transparent 100%);
 }
 
-/*                                        Tālāk seko "win" screen par pareizu atbildi                                */
+/* Win screen */
 .win-screen {
   background-color: #e1f7d5;
   padding: 30px 20px;
@@ -375,8 +330,11 @@ body {
   margin-bottom: 15px;
 }
 
-.score-label {
+.score-label, .score-box {
   font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.score-label {
   font-size: 1.1rem;
   margin: 15px 0 5px;
 }
@@ -384,7 +342,6 @@ body {
 .score-box {
   padding: 15px;
   border-radius: 12px;
-  font-family: 'Comic Sans MS', cursive, sans-serif;
   font-size: 1.3rem;
   margin-bottom: 20px;
   width: fit-content;
@@ -413,10 +370,7 @@ body {
   cursor: pointer;
 }
 
-
-
-/*                                        Tālāk seko "LOOSE" screen par hujovu atbildi                                */
-
+/* Lose screen */
 .lose-screen {
   background-color: #f7c6c6;
   padding: 30px 20px;
@@ -436,14 +390,16 @@ body {
   margin-bottom: 20px;
 }
 
-.lose-message {
+.lose-message, .no-points {
   font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.lose-message {
   font-size: 1.3rem;
   margin: 10px 0;
 }
 
 .no-points {
-  font-family: 'Comic Sans MS', cursive, sans-serif;
   font-size: 1.1rem;
   margin-bottom: 30px;
 }
@@ -458,6 +414,7 @@ body {
   color: white;
   cursor: pointer;
 }
+
 .lose-buttons {
   display: flex;
   justify-content: center;
@@ -481,7 +438,7 @@ body {
   border-radius: 2px;
 }
 
-/*                                        Tālāk seko LEADERBOARD                              */
+/* Leaderboard */
 .leaderboard-screen {
   background-color: #e0e0e0;
   padding: 30px 20px;
@@ -509,14 +466,12 @@ body {
   flex-direction: column;
   gap: 15px;
   padding: 0 10px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .leaderboard-scroll::-webkit-scrollbar {
   display: none;
-}
-.leaderboard-scroll {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }
 
 .leaderboard-entry {
@@ -530,25 +485,6 @@ body {
   font-size: 1.2rem;
   padding: 10px 20px;
   box-shadow: 0 4px 4px rgba(0,0,0,0.15);
-}
-
-.fade-top, .fade-bottom {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 30px;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.fade-top {
-  top: 0;
-  background: linear-gradient(to bottom, #e0e0e0 0%, transparent 100%);
-}
-
-.fade-bottom {
-  bottom: 0;
-  background: linear-gradient(to top, #e0e0e0 0%, transparent 100%);
 }
 
 .user-high-score-label {
@@ -578,4 +514,30 @@ body {
   font-size: 1rem;
   color: white;
   cursor: pointer;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  #app, .login-container {
+    padding: 15px;
+  }
+
+  .difficulty-btn,
+  .popup-btn,
+  .login-btn,
+  .new-game-btn,
+  .next-btn,
+  .home-btn {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+
+  .score-box {
+    font-size: 1.1rem;
+  }
+
+  .quiz-answer-btn {
+    font-size: 0.95rem;
+    padding: 12px;
+  }
 }
