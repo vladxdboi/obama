@@ -1,4 +1,4 @@
-/* Base styles */
+/* Base  */
 body {
   font-family: 'Segoe UI', sans-serif;
   margin: 0;
@@ -41,7 +41,7 @@ input {
   flex-direction: column;
   align-items: center;
   gap: 15px;
-  padding: 30px 20px;
+  padding: 40px 20px;
   background-color: #e0e0e0;
   border-radius: 12px;
   position: relative;
@@ -55,9 +55,11 @@ input {
 }
 
 .difficulty-header h2 {
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  font-size: 1.8rem;
-  margin: 0;
+  font-family: 'Shadows Into Light', cursive, sans-serif;
+  font-size: 25px;
+  margin: 0 auto;
+  text-align: center;
+  flex: 1;
 }
 
 .menu-icon {
@@ -78,37 +80,30 @@ input {
 .difficulty-btn {
   width: 100%;
   max-width: 300px;
-  padding: 14px;
+  padding: 10px 14px; 
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   color: white;
-  font-size: 1.3rem;
+  font-size: 1.6rem !important; 
   font-family: 'Comic Sans MS', cursive, sans-serif;
   cursor: pointer;
   transition: background 0.3s, transform 0.2s;
+  line-height: 0.7; 
 }
+
 
 .difficulty-btn:hover {
   transform: scale(1.05);
 }
+.difficulty-btn.easy { background-color: #81c784; }
+.difficulty-btn.medium { background-color: #c0ca33; }
+.difficulty-btn.hard { background-color: #ffb74d; }
+.difficulty-btn.tricky { background-color: #e57373; }
 
-.difficulty-btn.easy {
-  background-color: #81c784;
-}
 
-.difficulty-btn.medium {
-  background-color: #c0ca33;
-}
 
-.difficulty-btn.hard {
-  background-color: #ffb74d;
-}
 
-.difficulty-btn.tricky {
-  background-color: #e57373;
-}
-
-/* Popup menu */
+/*  menu */
 .popup-menu {
   position: fixed;
   top: 0;
@@ -120,10 +115,19 @@ input {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  pointer-events: all; 
 }
 
 .popup-menu.hidden {
-  display: none;
+  display: none; /* svarīgi, lai pilnībā "paslēptos" */
+}
+
+
+.popup-menu.hidden .popup-content {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  overflow: hidden;
 }
 
 .popup-content {
@@ -133,11 +137,16 @@ input {
   text-align: center;
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
   min-width: 250px;
+
+  max-height: 800px;
+  transition: max-height 0.5s ease, padding 0.4s ease;
+  overflow: hidden;
 }
 
 .popup-content h3 {
   font-family: 'Comic Sans MS', cursive, sans-serif;
   margin-bottom: 10px;
+  
 }
 
 .popup-btn {
@@ -147,12 +156,13 @@ input {
   padding: 12px;
   border: 2px solid #333;
   border-radius: 15px;
-  background-color: #d9534f;
+  background-color: #cfcfcf;
   font-family: 'Comic Sans MS', cursive, sans-serif;
   font-size: 1rem;
   cursor: pointer;
   box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
   transition: transform 0.2s;
+    color: black;
 }
 
 .popup-btn:hover {
@@ -174,17 +184,36 @@ input {
 .menu-info {
   margin-top: 20px;
   text-align: left;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
 }
+
+.menu-info.visible {
+  max-height: 500px; 
+  opacity: 1;
+}
+
 
 .info-box {
   background-color: #ffffff;
-  padding: 10px 15px;
+  padding: 0 15px; 
   border-radius: 8px;
   border: 1px solid #aaa;
   font-size: 0.95rem;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  transform: translateY(10px);
+  opacity: 0;
 }
 
-/* Login screen */
+.menu-info.visible .info-box {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+
+/* Login  */
 .login-container {
   background-color: #e0e0e0;
   padding: 30px 20px;
@@ -208,7 +237,7 @@ input {
 }
 
 .login-input {
-  width: 100%;
+  width: 90%;
   padding: 10px;
   border: none;
   border-radius: 10px;
@@ -235,7 +264,7 @@ input {
   cursor: pointer;
 }
 
-/* Quiz question screen */
+/* questions / answ. */
 .quiz-container {
   background-color: #e0e0e0;
   padding: 30px 20px;
@@ -273,10 +302,11 @@ input {
   flex-direction: column;
   gap: 15px;
   padding-right: 10px;
+  padding-left: 10px;
 }
 
 .quiz-answer-btn {
-  background-color: #c1f2f6;
+  background-color: #9decf2;
   color: #000;
   border: none;
   padding: 15px;
@@ -318,7 +348,7 @@ input {
 
 /* Win screen */
 .win-screen {
-  background-color: #e1f7d5;
+  background-color: #c9faaf;
   padding: 30px 20px;
   border-radius: 12px;
   text-align: center;
@@ -351,13 +381,8 @@ input {
   box-shadow: 0px 2px 6px rgba(0,0,0,0.15);
 }
 
-.green {
-  background-color: #b2f2bb;
-}
-
-.yellow {
-  background-color: #ffe299;
-}
+.green { background-color: #54f06a; }
+.yellow { background-color: #ffd466; }
 
 .next-btn {
   padding: 12px 20px;
@@ -372,7 +397,7 @@ input {
 
 /* Lose screen */
 .lose-screen {
-  background-color: #f7c6c6;
+  background-color: #fabbbb;
   padding: 30px 20px;
   border-radius: 12px;
   text-align: center;
@@ -516,7 +541,7 @@ input {
   cursor: pointer;
 }
 
-/* Responsive tweaks */
+/* lai lietas strādātu */
 @media (max-width: 600px) {
   #app, .login-container {
     padding: 15px;
@@ -540,4 +565,11 @@ input {
     font-size: 0.95rem;
     padding: 12px;
   }
+}
+.level-badge {
+  width: 50%;
+  max-width: 150px;
+  height: auto;
+  display: block;
+  margin: 0 auto 10px;
 }

@@ -2,12 +2,13 @@ let filteredQuestions = [];
 let currentQuestion = 0;
 let score = 0;
 let highScore = 0;
+let lastDifficulty = null;
+let answeredCorrectly = [];
 
-// ======================
-// 🔐 Login un Reģistrācija
-// ======================
 
-function renderLoginPage() {
+//Login un Reģistrācija
+
+function renderLoginPage(){
   document.getElementById("app").innerHTML = `
     <div class="screen-wrapper">
       <div class="login-container">
@@ -25,47 +26,43 @@ function renderLoginPage() {
   `;
 }
 
-function handleAuth(mode) {
+function handleAuth(mode){
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
 
-  if (!username || !password) {
+  if(!username || !password){
     alert("Please enter both username and password.");
-    return;
-  }
+    return;}
+
 
   const users = JSON.parse(localStorage.getItem("users") || "{}");
 
-  if (mode === "register") {
-    if (users[username]) {
+
+  if(mode === "register"){
+    if(users[username]){
       alert("Username already exists.");
       return;
     }
-    users[username] = { password, highScore: 0 };
-    localStorage.setItem("users", JSON.stringify(users));
+    users[username] = { password, highScore:0 };
+    localStorage.setItem("users",JSON.stringify(users));
     alert("Registered! Please log in.");
     return;
   }
 
-  if (users[username] && users[username].password === password) {
+  if(users[username] && users[username].password === password){
     localStorage.setItem("currentUser", username);
     highScore = users[username].highScore || 0;
-    renderDifficultyPage();
-  } else {
-    alert("Invalid credentials.");
-  }
+    renderDifficultyPage();}
+	else{alert("Invalid credentials.");}
 }
 
-// ======================
-// 🎚️ Grūtības izvēle
-// ======================
-
-function renderDifficultyPage() {
+// difficulty selector
+function renderDifficultyPage(){
   document.getElementById("app").innerHTML = `
     <div class="screen-wrapper">
       <div class="difficulty-container">
         <div class="difficulty-header">
-          <h2>WDYM?</h2>
+          <h2>Select Difficulty</h2>
           <div class="menu-icon" onclick="toggleMenu()">
             <div></div><div></div><div></div>
           </div>
@@ -73,43 +70,59 @@ function renderDifficultyPage() {
         <button class="difficulty-btn easy" onclick="startGame('easy')">EASY</button>
         <button class="difficulty-btn medium" onclick="startGame('medium')">MEDIUM</button>
         <button class="difficulty-btn hard" onclick="startGame('hard')">HARD</button>
+        <button class="difficulty-btn tricky" onclick="startGame('tricky')">TRICKY</button> <!-- Jaunā poga -->
       </div>
     </div>
-    ${getPopupMenuHTML()}
+    ${getPopupMenuHTML(false)}
   `;
 }
 
-function toggleMenu() {
+
+function toggleMenu(){
   const menu = document.getElementById("popup-menu");
+  if(!menu) return; 
   menu.classList.toggle("hidden");
-  document.getElementById("menu-info").innerHTML = '';
+  
+  if(menu.classList.contains("hidden")){
+    document.getElementById("menu-info").innerHTML = '';}
 }
 
-function showMenuContent(type) {
+
+function showMenuContent(type){
   const info = document.getElementById("menu-info");
   let content = "";
 
-  switch (type) {
+
+  switch (type){
     case 'how':
-      content = "<p>Answer correctly to score. One wrong answer ends the game!</p>";
+      content = "<p>Read the requirement and select the most appropriate implementation from the given options. Each correct answer earns you points, and the amount depends on the selected difficulty level. One wrong answer ends the game. Progress through ranks by scoring higher, and see how you compare with others on the global leaderboard.</p>";
       break;
     case 'faq':
-      content = "<p><strong>Q:</strong> Can I retry?<br><strong>A:</strong> No.</p>";
+      content = "<p><strong>Q:</strong> Do i have a set attempt ammount?<br><strong>A:</strong> No - you keep playing until you get all questions correct</p>";
       break;
     case 'leaderboard':
       showLeaderboard();
       return;
     case 'about':
-      content = "<p>This is a university student group project.</p>";
+      content = "<p>Grupas dalībnieki:<br><br>Dāniels Plaunovs, 221RDB422<br>Mārtiņš Nikiforovs, 221RDB386<br>Vladislavs Senevičs, 221RDB453<br>Kristiāns Šneiders, 221RDB042<br>Haralds Štrombergs 221RDB307<br>Rūdolfs Saukums 221RDB085<br>Kristaps Skudra 161REB074</p>";
       break;
+    case 'home':
+      renderDifficultyPage();
+      return;
+	  
+	  
     default:
       content = "<p>No content available.</p>";
   }
 
-  info.innerHTML = `<div class="info-box">${content}</div>`;
-}
+  info.classList.remove('visible'); // Sākumā noņem
+  setTimeout(() =>{
+    info.innerHTML = `<div class="info-box">${content}</div>`;
+    info.classList.add('visible'); // Tad pievieno ar pāreju
+  }, 10);}
 
-function getPopupMenuHTML() {
+
+function getPopupMenuHTML(showHomeButton = false){
   return `
     <div id="popup-menu" class="popup-menu hidden">
       <div class="popup-content">
@@ -122,34 +135,36 @@ function getPopupMenuHTML() {
         <button class="popup-btn" onclick="showMenuContent('faq')">FAQ</button>
         <button class="popup-btn" onclick="showMenuContent('leaderboard')">Leaderboard</button>
         <button class="popup-btn" onclick="showMenuContent('about')">About</button>
+        ${showHomeButton ? `<button class="popup-btn" onclick="showMenuContent('home')">Home</button>` : ""}
         <div id="menu-info" class="menu-info"></div>
       </div>
     </div>
   `;
 }
 
-// ======================
-// 🧠 Spēles loģika
-// ======================
+//Spēles logic
 
-function startGame(difficulty) {
+function startGame(difficulty){
   const username = localStorage.getItem("currentUser");
   const users = JSON.parse(localStorage.getItem("users") || "{}");
   highScore = users[username]?.highScore || 0;
 
+  lastDifficulty = difficulty;
+  answeredCorrectly = [];
+
   filteredQuestions = questions.filter(q => q.difficulty === difficulty);
-  currentQuestion = 0;
-  score = 0;
+  currentQuestion=0;
+  score=0;
   renderQuizPage();
 }
 
-function renderQuizPage() {
+
+function renderQuizPage(){
   const q = filteredQuestions[currentQuestion];
-  if (!q) return renderNoMoreQuestionsScreen();
+  if(!q) return renderNoMoreQuestionsScreen();
 
   const answersHTML = q.answers.map((a, i) =>
-    `<button class="quiz-answer-btn" onclick="checkAnswer(${i})">${a}</button>`
-  ).join("");
+    `<button class="quiz-answer-btn" onclick="checkAnswer(${i})">${a}</button>`).join("");
 
   document.getElementById("app").innerHTML = `
     <div class="screen-wrapper">
@@ -167,32 +182,32 @@ function renderQuizPage() {
   `;
 }
 
-function checkAnswer(index) {
+function checkAnswer(index){
   const q = filteredQuestions[currentQuestion];
-  if (index === q.correct) {
+  if(index === q.correct){
+    answeredCorrectly.push(q);
+
     const pts = q.difficulty === "easy" ? 100 : q.difficulty === "medium" ? 150 : 200;
     score += pts;
 
     const username = localStorage.getItem("currentUser");
     const users = JSON.parse(localStorage.getItem("users") || "{}");
-    if (score > (users[username]?.highScore || 0)) {
+    if(score > (users[username]?.highScore || 0)){
       users[username].highScore = score;
       localStorage.setItem("users", JSON.stringify(users));
     }
 
-    renderCorrectAnswerScreen(pts);
-  } else {
-    renderLoseScreen();
-  }
+    renderCorrectAnswerScreen(pts);}
+	else{renderLoseScreen();}
 }
 
-function renderCorrectAnswerScreen(pointsEarned) {
-  const levels = [300, 600, 1000];
-  const images = ["bronze", "silver", "gold"];
+
+function renderCorrectAnswerScreen(pointsEarned){
+  const levels =[300, 600, 1000];
+  const images =["bronze", "silver", "gold"];
   const level = levels.findIndex(p => score < p);
   const maxed = level === -1;
   const img = `data/${maxed ? "gold" : images[level]}.png`;
-
   const pointsToNext = maxed ? 0 : levels[level] - score;
 
   document.getElementById("app").innerHTML = `
@@ -206,22 +221,20 @@ function renderCorrectAnswerScreen(pointsEarned) {
         <div class="score-box green">${score} points</div>
         <p class="score-label">${maxed ? "You have reached the maximum level" : "Remaining points for next level"}</p>
         ${!maxed ? `<div class="score-box yellow">${pointsToNext} points</div>` : ""}
-        <button class="next-btn" onclick="nextQuestion()">Nākamais jautājums</button>
+        <button class="next-btn" onclick="nextQuestion()">Next question.</button>
       </div>
     </div>
   `;
 }
 
-function nextQuestion() {
+function nextQuestion(){
   currentQuestion++;
-  if (currentQuestion >= filteredQuestions.length) {
-    renderNoMoreQuestionsScreen();
-  } else {
-    renderQuizPage();
-  }
+  if(currentQuestion >= filteredQuestions.length){
+    renderNoMoreQuestionsScreen();}
+	else {renderQuizPage();}
 }
 
-function renderLoseScreen() {
+function renderLoseScreen(){
   document.getElementById("app").innerHTML = `
     <div class="screen-wrapper">
       <div class="lose-screen">
@@ -241,14 +254,14 @@ function renderLoseScreen() {
   `;
 }
 
-function renderNoMoreQuestionsScreen() {
+function renderNoMoreQuestionsScreen(){
   document.getElementById("app").innerHTML = `
     <div class="screen-wrapper">
       <div class="lose-screen yellow-bg">
         <h2>WDYM?</h2>
         <div class="wrong-icon">✔</div>
-        <p class="lose-message">Jūs esat izgājis cauri visiem šīs grūtības jautājumiem.</p>
-        <p class="no-points">Gaidiet nākamo spēles versiju ar vairāk jautājumiem :)</p>
+        <p class="lose-message">You have answered each question in this difficulty level.</p>
+        <p class="no-points">More questions coming soon - stay tuned... :)</p>
         <div class="lose-buttons">
           <button class="new-game-btn" onclick="renderDifficultyPage()">HOME</button>
         </div>
@@ -258,21 +271,41 @@ function renderNoMoreQuestionsScreen() {
   `;
 }
 
-// ======================
-// 🏆 Leaderboard
-// ======================
+function restartSameDifficulty(){
+  if(!lastDifficulty) 
+  {renderDifficultyPage();
+    return;}
 
-function showLeaderboard() {
-  const users = JSON.parse(localStorage.getItem("users") || "{}");
+  // fetcho jautājumus atkarībā no grūtības līmeņa un "vecos" atmet
+  const remaining = questions
+    .filter(q => q.difficulty === lastDifficulty && !answeredCorrectly.includes(q));
 
+  if(remaining.length === 0){
+    renderNoMoreQuestionsScreen();
+    return;
+  }
+
+  // shufle atlikušajiem jaut.
+  filteredQuestions = remaining.sort(() => Math.random()-0.5);
+  currentQuestion=0;
+  score=0;
+  renderQuizPage();
+}
+
+
+//leaderboard
+
+function showLeaderboard(){
+  const users = JSON.parse(localStorage.getItem("users")||"{}");
   const data = Object.entries(users)
-    .map(([name, user]) => ({ name, score: user.highScore || 0 }))
+  
+    .map(([name, user]) => ({ name, score: user.highScore ||0}))
     .sort((a, b) => b.score - a.score)
-    .slice(0, 10);
+    .slice(0,10);
 
   const entries = data.map(p => `<div class="leaderboard-entry"><span>${p.name}</span><span>${p.score}</span></div>`).join("");
   const current = localStorage.getItem("currentUser");
-  const currentScore = users[current]?.highScore || 0;
+  const currentScore= users[current]?.highScore || 0;
 
   document.getElementById("app").innerHTML = `
     <div class="screen-wrapper">
@@ -290,5 +323,8 @@ function showLeaderboard() {
     </div>
   `;
 }
+
+
+
 
 renderLoginPage();
